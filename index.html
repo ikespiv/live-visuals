@@ -32,8 +32,7 @@ let clipBuffer;
 let clip;
 let flicker = 175; 
 function setup() {
-  createCanvas(windowWidth, windowHeight);  // p5 makes the canvas automatically
-
+  createCanvas(windowWidth, windowHeight);  // p5 makes the canvas automatically  
   noLoop();
   let startButton = createButton('Start Camera');
   startButton.position(width / 2 - 50, height / 2);
@@ -56,8 +55,8 @@ function setup() {
   clip.speed(.3);
   clip.hide();
 
-  zoomBuffer = createGraphics(width,height);
-  clipBuffer = createGraphics(width*.2,height*.2);
+    zoomBuffer = createGraphics(floor(width * 0.5), floor(height * 0.5));
+    clipBuffer = createGraphics(floor(width * 0.3), floor(height * 0.3));
 
   scenes = [];
   scenes.push({
@@ -97,6 +96,32 @@ function setup() {
       nextSwitchTime = millis() + random(3000, 4000);
   }
 
+  function drawVideo(src, xOffset = 0, yOffset = 0, sizeZoom = 1){
+      let camW = video.elt.videoWidth;
+      let camH = video.elt.videoHeight;
+
+let camAspect = camW / camH;
+let canvasAspect = width / height;
+
+let drawW, drawH;
+
+if (camAspect > canvasAspect) {
+  // camera is wider than canvas — fit height
+  drawH = height;
+  drawW = height * camAspect;
+} else {
+  // camera is taller than canvas — fit width
+  drawW = width;
+  drawH = width / camAspect;
+}
+
+drawW *= sizeZoom;
+drawH *= sizeZoom;
+
+let vidX = (width-drawW)/2;
+let vidY = (height - drawH) /2;
+image(src, vidX + xOffset, vidY, drawW, drawH);
+}
 
   function draw(){
 
@@ -115,6 +140,7 @@ function setup() {
       }
       scheduleNextSwitch();
   }
+
   scenes[currentScene].draw();
   }
   }
@@ -124,10 +150,9 @@ function setup() {
 function drawScene0() {
 
 background(0);
+  
+drawVideo(video);
 
-image(video,0,0,width,height);
-tint(255,200);
-image(video,0,0,width,height);
 noTint();
 //zoomBuffer.clear();
 zoomBuffer.image(video,0,0,zoomBuffer.width,zoomBuffer.height);
@@ -140,7 +165,7 @@ let h = height*zoom;
 t -= 1
 let x = t;
 
-image(zoomBuffer,x,0,w,h);
+drawVideo(zoomBuffer,x + 250,0,1.4);
 noTint();
 
 clipBuffer.image(clip,0,0,width,height);
@@ -155,9 +180,10 @@ noTint();
       let xOffset = null
       let glitchTimer = 0 
 function drawScene1() {
+    
   background(0);
   tint(200,0,255);
-    image(video, 0, 0, width, height);
+    drawVideo(video);
                 filter(POSTERIZE, 15);
 loadPixels();               // get pixel data of the current frame
 for (let i = 0; i < pixels.length; i += 4) { // loop through every pixel (RGBA)
@@ -179,7 +205,7 @@ if(glitchTimer <= 0 && random() < .1){
   if(glitchTimer > 0){
         push();
   tint(0,0,255, 255);
-  blendMode(HARD_LIGHT);
+  blendMode(ADD);
       image(video, 0, glitchY, width*1.2, glitchH*1.2, xOffset, glitchY, width, glitchH);
       blendMode(BLEND);
       pop();
@@ -202,12 +228,12 @@ function drawScene2(){
 
 
      tint(255,flicker); 
-    image(zoomBuffer, -2500,-900,width*3.5,height*3.5)
+    drawVideo(zoomBuffer, 0,400,1.5)
     filter(THRESHOLD,.30);
     blendMode(EXCLUSION);
 
     tint(255);
-    image(zoomBuffer,-400,-300,width*1.7,height*1.7);
+    drawVideo(zoomBuffer,-400,-300,1);
     filter(POSTERIZE, 4)
     blendMode(BLEND);
     noTint();
@@ -235,7 +261,7 @@ blendMode(SCREEN);
 image(clipBuffer,0,0,width, height);
 
     tint(255,0,0,255);
-    image(zoomBuffer,-400,-300,width*1.5,height*1.5);image(zoomBuffer, )
+    drawVideo(zoomBuffer,0,-300,1.2);
     filter(POSTERIZE, 10);
 blendMode(BLEND);
 noTint();

@@ -141,7 +141,7 @@ image(src, vidX + xOffset, vidY, drawW, drawH);
       scheduleNextSwitch();
   }
 
-  scenes[currentScene].draw();
+  scenes[0].draw();
   }
   }
 
@@ -151,7 +151,7 @@ function drawScene0() {
 
 background(0);
   
-drawVideo(video);
+drawVideo(video,0,0,.7);
 
 noTint();
 //zoomBuffer.clear();
@@ -274,3 +274,4 @@ function windowResized() {
 
 </body>
 </html>
+

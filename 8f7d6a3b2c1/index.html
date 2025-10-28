@@ -46,7 +46,7 @@ let useFrontCamera = true;
 
 // -------------------- MAIN SETUP --------------------
 function setup() {
-  createCanvas(windowWidth, windowHeight);
+  createCanvas(windowWidth, windowHeight + 1);
 
   fsButton = createButton('Fullscreen (desktop only)');
   fsButton.position(20,50);
@@ -315,7 +315,7 @@ function drawScene3(){
 
 // -------------------- RESIZE --------------------
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
+  resizeCanvas(windowWidth, windowHeight + 1);
   if (video) video.size(windowWidth, windowHeight);
   if (clip) clip.size(windowWidth, windowHeight);
   zoomBuffer = createGraphics(windowWidth * 0.5, windowHeight * 0.5);

@@ -5,7 +5,9 @@
 <meta charset="UTF-8">
 <title>Live Visuals Prototype (p5.js)</title>
 <style>
+  <div style="height:200vh; background:black;"></div> <!-- scroll space -->
   body {
+
     margin: 0;
     background: black;
     width: 100%;
@@ -13,7 +15,7 @@
     overflow: hidden;
   }
   canvas {
-
+      position: fixed;
     top: 0;
     left: 0;
 display: block;
@@ -22,10 +24,9 @@ display: block;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
 </head>
 
-<body style="margin:0; background:black; overflow:auto;">
-  <div style="height:50px; text-align:center; color:white;"> Scroll Down </div>
-  <div id="canvasContainer" style="height:100vh;">
-  </div>
+<body>
+
+
 
 <script>
 let scenes = [];
@@ -46,7 +47,7 @@ let useFrontCamera = true;
 
 // -------------------- MAIN SETUP --------------------
 function setup() {
-  createCanvas(windowWidth, windowHeight + 1);
+  createCanvas(windowWidth, windowHeight);
 
   fsButton = createButton('Fullscreen (desktop only)');
   fsButton.position(20,50);
@@ -315,7 +316,7 @@ function drawScene3(){
 
 // -------------------- RESIZE --------------------
 function windowResized() {
-  resizeCanvas(windowWidth, windowHeight + 1);
+  resizeCanvas(windowWidth, windowHeight);
   if (video) video.size(windowWidth, windowHeight);
   if (clip) clip.size(windowWidth, windowHeight);
   zoomBuffer = createGraphics(windowWidth * 0.5, windowHeight * 0.5);

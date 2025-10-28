@@ -8,12 +8,15 @@
   body {
     margin: 0;
     background: black;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
   }
   canvas {
     position: absolute;
     top: 0;
     left: 0;
+display: block;
   }
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
@@ -66,6 +69,7 @@ function setup() {
    // setupClipAndScenes();
 
     startButton.hide();
+    window.scrollTo(0,0);
   });
 }
 
@@ -94,6 +98,7 @@ function startCamera() {
     console.log("Clip loaded");
       clip.loop();
   clip.speed(.3);
+  clip.elt.setAttribute('muted','');
   });
   clip.elt.setAttribute('playsinline', '');
   clip.size(width,height);

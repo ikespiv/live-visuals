@@ -13,7 +13,7 @@
     overflow: hidden;
   }
   canvas {
-    position: absolute;
+
     top: 0;
     left: 0;
 display: block;
@@ -22,7 +22,10 @@ display: block;
 <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.7.0/p5.min.js"></script>
 </head>
 
-<body>
+<body style="margin:0; background:black; overflow:auto;">
+  <div style="height:50px; text-align:center; color:white;"> Scroll Down </div>
+  <div id="canvasContainer" style="height:100vh;">
+  </div>
 
 <script>
 let scenes = [];
@@ -45,12 +48,12 @@ let useFrontCamera = true;
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
-  fsButton = createButton('Fullscreen');
-  fsButton.position(20,20);
+  fsButton = createButton('Fullscreen (desktop only)');
+  fsButton.position(20,50);
   fsButton.mousePressed(toggleFullScreen);
 
   camToggleButton = createButton('Switch Camera');  // NEW
-  camToggleButton.position(20, 60);
+  camToggleButton.position(20, 760);
   camToggleButton.mousePressed(toggleCamera);       // NEW
   // Detect available cameras
 
@@ -61,6 +64,7 @@ function setup() {
   startButton.position(width / 2 - 50, height / 2);
 
   startButton.mousePressed(() => {
+
     startCamera();  // NEW: wrapped in function
 
 
@@ -95,14 +99,18 @@ function startCamera() {
     //loop();
  
     clip = createVideo('clip.mp4', () => {
+        
     console.log("Clip loaded");
-      clip.loop();
+      clip.elt.setAttribute('muted','');
   clip.speed(.3);
-  clip.elt.setAttribute('muted','');
+  clip.loop();
+
   });
   clip.elt.setAttribute('playsinline', '');
   clip.size(width,height);
-  clip.volume(0);
+    clip.volume(0);
+  clip.play();
+
   clip.hide();
 
   scenes = [
